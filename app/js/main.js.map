@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":["console","log"],"mappings":"AAAA,MAAM,aAAaA,QAAQC,OAA3B","file":"main.js","sourcesContent":["(()=>{\"use strict\";console.log()})();"]}
