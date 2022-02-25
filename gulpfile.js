@@ -70,7 +70,5 @@ const watchFile = () =>{
 
 
 
-exports.styles = styles;
-exports.watchFile = watchFile;
 
 exports.default = series( Include, styles, ImageToApp, svgSprite, watchFile)
