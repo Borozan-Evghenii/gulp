@@ -1,5 +1,4 @@
 const {src, dest, parallel, series, watch} = require('gulp');
-const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass')); // Compilator Sass
 const notify = require('gulp-notify'); //Error-Notify
 const sourcemaps = require('gulp-sourcemaps'); //harta de sursă
@@ -7,6 +6,7 @@ const rename = require('gulp-rename'); // Redenumire File
 const autoprefixer = require('gulp-autoprefixer'); //Autoprefixare
 const cleanCSS = require('gulp-clean-css'); //minificare Css
 const fileinclude  = require('gulp-file-include'); //Include componente de html în index.html
+const SvgSprite  = require('gulp-svg-sprite'); //Crearea automată a spraiturilor
 const browserSync = require('browser-sync').create(); // Livereload pentru Browser
 
 
@@ -33,8 +33,24 @@ const Include = () =>{
         prefix: '@',
         basepath: '@file'
       }))
-    .pipe(gulp.dest('./app'))
+    .pipe(dest('./app'))
     .pipe(browserSync.stream())
+}
+
+const ImageToApp = () =>{
+    return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
+    .pipe(dest('app/img'))
+}
+const svgSprite = () =>{
+    return src('./src/image/**.svg')
+    .pipe(SvgSprite({
+        mode:{
+            stack:{
+                sprite: "../sprite.svg"
+            }
+        }
+    }))
+    .pipe(dest('./app/img'))
 }
 
 const watchFile = () =>{
@@ -45,6 +61,10 @@ const watchFile = () =>{
     });
     watch('./src/scss/**/*.scss', styles);
     watch('./src/index.html', Include);
+    watch('./src/img/**.jpg', ImageToApp);
+    watch('./src/img/**.png', ImageToApp);
+    watch('./src/img/**.jpeg', ImageToApp);
+    watch('./src/img/**.svg', svgSprite);
 
 };
 
@@ -53,4 +73,4 @@ const watchFile = () =>{
 exports.styles = styles;
 exports.watchFile = watchFile;
 
-exports.default = series( Include, styles, watchFile)
+exports.default = series( Include, styles, ImageToApp, svgSprite, watchFile)
