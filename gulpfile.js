@@ -45,7 +45,7 @@ const svgSprite = () =>{
     return src('./src/image/**.svg')
     .pipe(SvgSprite({
         mode:{
-            stack:{
+            symbol:{
                 sprite: "../sprite.svg"
             }
         }
