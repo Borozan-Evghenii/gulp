@@ -153,7 +153,7 @@ const watchFile = () =>{
 
 
 
-exports.default = series( clean, parallel( Include, fonts, ImageToApp, scripts, svgSprite, resourceTo ),fontsStyle, styles ,watchFile)
+exports.default = series( parallel( Include, fonts, ImageToApp, scripts, svgSprite, resourceTo ),fontsStyle, styles ,watchFile)
 
 const scriptsBuild = () =>{
     return src('./src/js/main.js')
