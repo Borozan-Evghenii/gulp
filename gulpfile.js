@@ -74,6 +74,7 @@ const styles = () =>{
     }))
     .pipe(sourcemaps.write())
     .pipe(dest('./app/css/'))
+    .pipe(browserSync.stream())
 }
 const Include = () =>{
     return src(['./src/index.html'])
