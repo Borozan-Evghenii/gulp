@@ -14,9 +14,10 @@ const fs = require('fs'); // Work with File sYstem
 const del = require('del'); // Delete fUNCTION
 const webpackStream = require('webpack-stream');
 const webpack = require('webpack');
-const imagemin = require('gulp-imagemin');
+const tinypng = require('gulp-tinypng-compress');
+const util = require('gulp-util');
+const ftp = require('vinyl-ftp');
 const uglify = require('gulp-uglify-es').default;
-
 
 
 
@@ -197,20 +198,37 @@ const stylesBuild = () =>{
 }
 const imageMin = () =>{
     return src('./src/img/**/*.*')
-    .pipe(imagemin([
-        imagemin.gifsicle({interlaced: true}),
-        imagemin.mozjpeg({quality: 75, progressive: true}),
-        imagemin.optipng({optimizationLevel: 5}),
-        imagemin.svgo({
-            plugins: [
-                {removeViewBox: true},
-                {cleanupIDs: false}
-            ]
-        })
-    ]))
-    .pipe(dest('./app/img/'))
+    .pipe(tinypng({
+        key: 'yjqkvysBCn95SVxcgv52d8vjqLmS1NPB',
+        log: true,
+    }))
+    .pipe(dest('./app/img'));
 }
 
 
 
 exports.build = series( clean, parallel( Include, fonts, ImageToApp, scriptsBuild, svgSprite, resourceTo ),fontsStyle, stylesBuild ,imageMin)
+
+// deploy
+const deploy = () => {
+	let conn = ftp.create({
+		host: '', //denumirea siteului
+		user: '', // numele user
+		password: '', //parola user
+		parallel: 10,
+		log: util.log
+	});
+
+	let globs = [
+		'app/**',
+	];
+
+	return src(globs, {
+			base: './app',
+			buffer: false
+		})
+		.pipe(conn.newer('')) // only upload newer files /www/kangsroo.maxgraph.ru/
+		.pipe(conn.dest(''));// /www/kangsroo.maxgraph.ru/
+}
+
+exports.deploy = deploy;
