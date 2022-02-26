@@ -44,5 +44,9 @@
     "vinyl-ftp": "^0.6.1",
     "webpack": "^5.69.1",
     "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1",
+    "reset.css": "^2.0.2"
   }
 }

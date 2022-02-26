@@ -2,8 +2,17 @@
 @import "mixins";
 @import "variables";
 @import "fonts";
+@import "../../node_modules/normalize.css/normalize.css";
+@import "../../node_modules/reset.css/reset.css";
+
 
 
 body{
     background-color: $primary;
+}
+.section{
+    background-color: $section;
+    width: 100px;
+    height: 100px;
+    
 }
